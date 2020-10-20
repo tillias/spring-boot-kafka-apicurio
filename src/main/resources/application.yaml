@@ -1,0 +1,25 @@
+server:
+  port: 8080
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.apicurio.registry.utils.serde.AvroKafkaDeserializer
+      properties:
+        spring.json.trusted.packages: "com.github.tillias.spbka"
+        apicurio:
+          registry:
+            use-specific-avro-reader: true
+            url: http://localhost:8081/api
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.apicurio.registry.utils.serde.AvroKafkaSerializer
+      properties:
+        apicurio:
+          registry:
+            url: http://localhost:8081/api
+            artifact-id: io.apicurio.registry.utils.serde.strategy.TopicIdStrategy
